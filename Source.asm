@@ -1,4 +1,8 @@
+
+;By: James Meegan 3/25/21
+
 ; EXTERNAL DEPENDENCIES
+
 INCLUDE Irvine32.inc
 INCLUDELIB Irvine32.lib
 
