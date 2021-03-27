@@ -18,6 +18,12 @@ ExitProcess PROTO, dwExitCode:DWORD
 .data
 eFlagContents		BYTE ?
 
+; , 0 makes the project null
+				
+TableDisplay				BYTE	" _____________________",0
+FlagNameDisplay				BYTE 	" |sf",0
+
+
 ; -- Status Flag Names --
 ; NOTE: After a call to LAHF, AH is loaded with EFLAGS status flag
 ;       information. AH = EFLAGS(SF:ZF:00:AF:00:PF:01:CF).  Notice
@@ -37,6 +43,13 @@ eFlagContents		BYTE ?
 .code
 main PROC
 
+MOV EDX, OFFSET TableDisplay	
+	CALL WriteString
+	CALL Crlf
+
+MOV EDX, OFFSET FlagNameDisplay	
+	CALL WriteString
+	CALL Crlf
 
 	; Clobber EAX with all 0s and show the clean slate.
 	MOV EAX, 0
@@ -61,8 +74,18 @@ main PROC
 	CALL Crlf
 
 
-	; Return to OS.
+
+	
+
+	;Return to OS
 	INVOKE ExitProcess, 0
 main ENDP
 
 END main								; end of OPCODES
+
+; Draw a line in a graphics mode
+
+;By extension, draws a yellow line in the upper-left.
+;A good example of how to efficiently use INC, CMP,
+;and a conditional jump for repetitive tasks.
+
