@@ -20,9 +20,9 @@ eFlagContents		BYTE ?
 
 ; , 0 makes the project null
 				
-TableDisplay				BYTE	"  _____________________",0
-FlagNameDisplay				BYTE 	" |sf | |  |  |  |  |  |",0
-
+TableDisplay				BYTE	" ============================================= ",0
+FlagNameDisplay				BYTE 	" ||SF ||ZF ||RES ||AF ||RES ||PF ||RES ||CF ||",0
+TableDisplay3rdLine				BYTE	" ============================================= ",0
 
 ; -- Status Flag Names --
 ; NOTE: After a call to LAHF, AH is loaded with EFLAGS status flag
@@ -51,14 +51,16 @@ MOV EDX, OFFSET FlagNameDisplay
 	CALL WriteString
 	CALL Crlf
 
+MOV EDX, OFFSET TableDisplay3rdLine	
+	CALL WriteString
+	CALL Crlf
 	; Clobber EAX with all 0s and show the clean slate.
 	MOV EAX, 0
 	
-	CALL Crlf
-	
 	; "lahf" - load flag data into AH - This is a single command that appears alone.
 	;                                   when the command is executed, the lower BYTE (8-bits)
-	;                                   of the EFLAGS register is loaded directly to AH.
+	;  of the EFLAGS register is loaded directly to AH.
+	;USE OF LAHF
 	lahf
 	MOV eFlagContents, AH				; Store a copy of the flag contents for future use.
 
@@ -70,7 +72,7 @@ MOV EDX, OFFSET FlagNameDisplay
 	; Show the contents of AL (the place where the flag data should have been copied at this point).
 	MOV EBX, TYPE BYTE
 	
-	CALL WriteBinB ;Intial flag contents displayed here
+	;CALL WriteBinB ;Intial flag contents displayed here
 	CALL Crlf
 
 
