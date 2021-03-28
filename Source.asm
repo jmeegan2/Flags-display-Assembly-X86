@@ -20,9 +20,9 @@ eFlagContents		BYTE ?
 
 ; , 0 makes the project null
 				
-TableDisplay				BYTE	" ============================================= ",0
+TableDisplay				BYTE	" _____________________________________________ ",0
 FlagNameDisplay				BYTE 	" ||SF ||ZF ||RES ||AF ||RES ||PF ||RES ||CF ||",0
-TableDisplay3rdLine				BYTE	" ============================================= ",0
+TableDisplay3rdLine				byte " ",0
 
 ; -- Status Flag Names --
 ; NOTE: After a call to LAHF, AH is loaded with EFLAGS status flag
@@ -42,6 +42,9 @@ TableDisplay3rdLine				BYTE	" ============================================= ",0
 ; CODE SEGMENT
 .code
 main PROC
+
+	mov cl, 255
+	add cl, 1 
 
 MOV EDX, OFFSET TableDisplay	
 	CALL WriteString
@@ -74,7 +77,12 @@ MOV EDX, OFFSET TableDisplay3rdLine
 	
 	;CALL WriteBinB ;Intial flag contents displayed here
 	CALL Crlf
+	call WriteBinB				;this call is what displays my flags values
+	
+	;I need to now find out how to seperate them in a way in which they will 
+	;underneath their corresponding label for the value
 
+	; Watch this video for guidance https://www.youtube.com/watch?v=zf1bg3WCFUI
 
 
 	
