@@ -20,8 +20,8 @@ eFlagContents		BYTE ?
 
 ; , 0 makes the project null
 				
-TableDisplay				BYTE	" _____________________",0
-FlagNameDisplay				BYTE 	" |sf",0
+TableDisplay				BYTE	"  _____________________",0
+FlagNameDisplay				BYTE 	" |sf | |  |  |  |  |  |",0
 
 
 ; -- Status Flag Names --
