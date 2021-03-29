@@ -1,3 +1,4 @@
 ﻿  Assembling Source.asm...
-Source.asm(7): warning A4011: multiple .MODEL directives found : .MODEL ignored
+Source.asm(11): warning A4011: multiple .MODEL directives found : .MODEL ignored
+  LINK : C:\Programming2021\Assembly\Project-1-Assembly\Debug\Project-1-Assembly.exe not found or not built by the last incremental link; performing full link
   Project-1-Assembly.vcxproj -> C:\Programming2021\Assembly\Project-1-Assembly\Debug\Project-1-Assembly.exe
