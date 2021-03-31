@@ -12,6 +12,9 @@ ExitProcess PROTO, dwExitCode:DWORD
 
 ; DATA SEGMENT
 .data
+addendOne			DWORD 10d
+
+eFlagContents		BYTE ?
 
 ShowNewline		TEXTEQU	<CALL Crlf>
 
@@ -94,7 +97,8 @@ invertedTC		BYTE	1 DUP(invertedTConnector), 0
 main PROC
 	
 	;Visual represention of graph begins here
-
+	
+	ShowNewLine
 	MOV EDX, OFFSET cornerL
 	CALL WriteString
 	
@@ -127,7 +131,7 @@ main PROC
 	CALL WriteString 
 
 		; Show the string with 5 = signs.
-	MOV EDX, OFFSET flatLines
+	MOV EDX, OFFSET flatLines                                                 
 	CALL WriteString
 
 	MOV EDX, OFFSET tConnector
@@ -408,6 +412,7 @@ main PROC
 	mov edx,offset straightLineD
 	call writestring
 
+	; End of values for flags section
 	ShowNewLine
 
 	
@@ -468,32 +473,31 @@ main PROC
 	
 	mov edx, offset bottomCornerR
 	call writestring
+
+	
 	
 	
 	;Visual represention of graph ends here
 
 
 
-
-	; Show 'arraySize' As.
-	;MOV EDX, OFFSET howeverManyAs
-	;CALL WriteString
-	;ShowNewline
-
-	; Establish and display 'howeverManyAs' array size by adjusting the constant
-	; difference between 'endOfAsOffset' and 'howeverManyAs'.
-	;MOV EDX, OFFSET arraySizeMessage
-	;CALL WriteString
-	;MOV EAX, (endOfAsOffset - howeverManyAs)		; it is arraySize + 1 since the null byte counts
-	;DEC EAX											; adjust for null byte
-	; NOTE: We were only able to perform (endOfAsOffset - howeverManyAs) as a literal expression
-	; subtraction because at this point in the code, both identifiers resolve to constant (immediate)
-	; values.  If either of these values was associated with a memory location for storate, this
-	; different would have to have been calculated through a CPU operation (probably SUB).
-	;CALL WriteDec
 	ShowNewline
+
 	
+; "lahf" - load flag data into AH - This is a single command that appears alone.
+	;                                   when the command is executed, the lower BYTE (8-bits)
+	;                                   of the EFLAGS register is loaded directly to AH.
+	lahf
+	MOV eFlagContents, AH				; Store a copy of the flag contents for future use.
+
+	; Show the contents of EAX directly after the 'lahf' call.
+	CALL WriteBin
+	CALL Crlf
+
+
 	; return to OS
+
+
 	INVOKE ExitProcess, 0
 main ENDP
 
