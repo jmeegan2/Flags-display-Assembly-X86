@@ -42,10 +42,7 @@ InvertedTConnector			EQU		202d	; 202 is the base-10 ASCII code for a inverted op
 
 
 
-; --- DUP Operator ---
-; The DUP operator can be used to replicate symbolic constant text an arbitrary number of times.
-; DUP is commonly used to initialize large data segment arrays.
-;arraySizeMessage	BYTE	"'howeverManyAs' array size currently set to: ", 0
+
 
 cornerL			BYTE	1	DUP(cornerLeft), 0
 flatLines		BYTE	3 DUP(theDoubleLinesSymbol), 0
@@ -76,25 +73,22 @@ invertedTC		BYTE	1 DUP(invertedTConnector), 0
 
 
 ;
-;howeverManyAs		BYTE	arraySize DUP("A"), 0
 
-; --- CURRENT LOCATION COUNTER ($) ---
-; The current location is the 32-bit memory address associated with the current offset
-; into the code segment.  This value can be casually retrieved with the '$' symbol used
-; in place of a 32-bit integer literal (memory addresses take 
-; the form of DWORDs, or 32-bit on x86).
-;endOfAsOffset		DWORD	$
-
-; NOTE: By capturing the offset address at 'endOfAsOffset', we can calculate the size
-; of 'howeverManyAs' by creating a literal symbolic constant containing the difference
-; between the two addresses.  Since this is an array of BYTE variables, a single offset
-; address correlates exactly to a single element in the string.  Keep in mind the null
-; byte was also appened to the end of the string to ensure compatibility with display
-; functions.  This null byte also takes up a BYTE when the size calculation takes place.
 
 ; CODE SEGMENT
 .code
 main PROC
+
+; "lahf" - load flag data into AH - This is a single command that appears alone.
+	;                                   when the command is executed, the lower BYTE (8-bits)
+	;                                   of the EFLAGS register is loaded directly to AH.
+	lahf
+	MOV eFlagContents, AH				; Store a copy of the flag contents for future use.
+
+	; Show the contents of EAX directly after the 'lahf' call.
+	CALL WriteBin
+	CALL Crlf
+
 	
 	;Visual represention of graph begins here
 	
@@ -484,15 +478,6 @@ main PROC
 	ShowNewline
 
 	
-; "lahf" - load flag data into AH - This is a single command that appears alone.
-	;                                   when the command is executed, the lower BYTE (8-bits)
-	;                                   of the EFLAGS register is loaded directly to AH.
-	lahf
-	MOV eFlagContents, AH				; Store a copy of the flag contents for future use.
-
-	; Show the contents of EAX directly after the 'lahf' call.
-	CALL WriteBin
-	CALL Crlf
 
 
 	; return to OS
