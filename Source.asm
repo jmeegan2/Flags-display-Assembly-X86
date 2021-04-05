@@ -18,6 +18,7 @@ eFlagContents		BYTE ?
 
 ShowNewline		TEXTEQU	<CALL Crlf>
 
+;numberZero					EQU		48d		; 48 is the base-10 ASCII code for the number zero
 cornerLeft					EQU		201d	; 201 is the base-10 ASCII code for open ended left corner
 theDoubleLinesSymbol		EQU		205d	; 205 is the base-10 ASCII code for "="
 tShapeConnector				EQU		203d	; 203 is the base-10 ASCII code for t shape open ended connector
@@ -39,6 +40,7 @@ bottomCornerLeft			EQU     200d	; 200 is the base-10 ASCII code for a open ended
 bottomCornerRight			EQU		188d	; 188 is the base-10 ASCII code for a open ended backwards L shape
 InvertedTConnector			EQU		202d	; 202 is the base-10 ASCII code for a inverted open ended capital T
 
+numberOne					EQU		49d		; 49 is the base-10 ASCII code for the number one		
 
 
 
@@ -64,6 +66,9 @@ tShapeConnectorR BYTE   1 DUP(tShapeConnectorRight), 0
 bottomCornerL	BYTE	1 DUP(bottomCornerLeft), 0
 bottomCornerR	BYTE	1 DUP(bottomCornerRight), 0
 invertedTC		BYTE	1 DUP(invertedTConnector), 0
+;numberZeroD			BYTE	0 DUP(numberZero); 0
+number1			BYTE	1 DUP(numberOne); 0
+
 
 
 
@@ -86,7 +91,7 @@ main PROC
 	MOV eFlagContents, AH				; Store a copy of the flag contents for future use.
 
 	; Show the contents of EAX directly after the 'lahf' call.
-	CALL WriteBin
+	CALL WriteBinB
 	CALL Crlf
 
 	
@@ -313,7 +318,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC		;ATTENTION FUTURE ME: you will be able to remove the middle space and place the value for corresponding flag
+	mov edx,offset spaceC		;Directly under SF, ATTENTION FUTURE ME: you will be able to remove the middle space and place the value for corresponding flag
 	call writestring
 
 	mov edx,offset spaceC
@@ -325,7 +330,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC
+	mov edx,offset spaceC	;Directly under ZF
 	call writestring
 
 	mov edx,offset spaceC
@@ -337,7 +342,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC
+	mov edx,offset spaceC	;Directly under RES
 	call writestring
 
 	mov edx,offset spaceC
@@ -349,7 +354,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC
+	mov edx,offset spaceC	;Directly under AF
 	call writestring
 
 	mov edx,offset spaceC
@@ -361,7 +366,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC
+	mov edx,offset spaceC	;Directly under RES
 	call writestring
 
 	mov edx,offset spaceC
@@ -373,7 +378,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC
+	mov edx,offset spaceC	;Directly under PF
 	call writestring
 
 	mov edx,offset spaceC
@@ -385,7 +390,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC
+	mov edx,offset number1 ;Directly under RES, Reserved, always 1 in Eflags
 	call writestring
 
 	mov edx,offset spaceC
@@ -397,7 +402,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC
+	mov edx,offset spaceC	;Directly under CF 
 	call writestring
 
 	mov edx,offset spaceC
@@ -467,6 +472,8 @@ main PROC
 	
 	mov edx, offset bottomCornerR
 	call writestring
+
+	
 
 	
 	
