@@ -43,7 +43,11 @@ InvertedTConnector			EQU		202d	; 202 is the base-10 ASCII code for a inverted op
 numberOne					EQU		49d		; 49 is the base-10 ASCII code for the number one		
 
 
-
+;Most people set up a strategy with a bitfield mask.
+;Use AND or OR against a pre-defined bitfield that isolates the bit in question.
+;i.e. XXXX XXXX AND 0001 0000
+;that would be a test that would only result in a non-zero value if the 4th bit from the left was "1".
+;A strategy based around that idea is what most people develop.
 
 
 cornerL			BYTE	1	DUP(cornerLeft), 0
@@ -83,7 +87,8 @@ number1			BYTE	1 DUP(numberOne), 0
 ; CODE SEGMENT
 .code
 main PROC
-
+	; Starting off value 0000 0001 0001 0011 0100 0110 1101 1000
+	; Appears to be 4 values 
 ; "lahf" - load flag data into AH - This is a single command that appears alone.
 	;                                   when the command is executed, the lower BYTE (8-bits)
 	;                                   of the EFLAGS register is loaded directly to AH.
