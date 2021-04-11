@@ -18,7 +18,7 @@ eFlagContents		BYTE ?
 
 ShowNewline		TEXTEQU	<CALL Crlf>
 
-;numberZero					EQU		48d		; 48 is the base-10 ASCII code for the number zero
+numberZero					EQU		48d		; 48 is the base-10 ASCII code for the number zero
 cornerLeft					EQU		201d	; 201 is the base-10 ASCII code for open ended left corner
 theDoubleLinesSymbol		EQU		205d	; 205 is the base-10 ASCII code for "="
 tShapeConnector				EQU		203d	; 203 is the base-10 ASCII code for t shape open ended connector
@@ -66,8 +66,8 @@ tShapeConnectorR BYTE   1 DUP(tShapeConnectorRight), 0
 bottomCornerL	BYTE	1 DUP(bottomCornerLeft), 0
 bottomCornerR	BYTE	1 DUP(bottomCornerRight), 0
 invertedTC		BYTE	1 DUP(invertedTConnector), 0
-;numberZeroD			BYTE	0 DUP(numberZero); 0
-number1			BYTE	1 DUP(numberOne); 0
+numberZeroD		BYTE	1 DUP(numberZero), 0
+number1			BYTE	1 DUP(numberOne), 0
 
 
 
@@ -342,8 +342,8 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC	;Directly under RES
-	call writestring
+	mov edx,offset numberZeroD	;Directly under RES , I figure since its a constant value there is no harm in 
+	call writestring			;just writing the ascii symbol for zero
 
 	mov edx,offset spaceC
 	call writestring
@@ -366,7 +366,7 @@ main PROC
 	mov edx,offset spaceC
 	call writestring
 
-	mov edx,offset spaceC	;Directly under RES
+	mov edx,offset numberZeroD	;Directly under RES
 	call writestring
 
 	mov edx,offset spaceC
