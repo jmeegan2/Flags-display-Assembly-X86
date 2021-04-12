@@ -43,11 +43,14 @@ InvertedTConnector			EQU		202d	; 202 is the base-10 ASCII code for a inverted op
 numberOne					EQU		49d		; 49 is the base-10 ASCII code for the number one		
 
 
+
 ;Most people set up a strategy with a bitfield mask.
 ;Use AND or OR against a pre-defined bitfield that isolates the bit in question.
 ;i.e. XXXX XXXX AND 0001 0000
 ;that would be a test that would only result in a non-zero value if the 4th bit from the left was "1".
 ;A strategy based around that idea is what most people develop.
+
+
 
 
 cornerL			BYTE	1	DUP(cornerLeft), 0
@@ -73,11 +76,10 @@ invertedTC		BYTE	1 DUP(invertedTConnector), 0
 numberZeroD		BYTE	1 DUP(numberZero), 0
 number1			BYTE	1 DUP(numberOne), 0
 
-
-
-
-
-
+;data for calling zero flag
+myValueMakesADifference			BYTE	6d
+valueLess1			BYTE	"0"
+valueEqual1			BYTE	"1"
 
 
 
@@ -87,18 +89,25 @@ number1			BYTE	1 DUP(numberOne), 0
 ; CODE SEGMENT
 .code
 main PROC
+	
+	
+
+
+	
+	
+	
 	; Starting off value 0000 0001 0001 0011 0100 0110 1101 1000
-	; Appears to be 4 values 
-; "lahf" - load flag data into AH - This is a single command that appears alone.
+	; Appears to be 4 values	
+	;"lahf" - load flag data into AH - This is a single command that appears alone.
 	;                                   when the command is executed, the lower BYTE (8-bits)
 	;                                   of the EFLAGS register is loaded directly to AH.
 	lahf
 	MOV eFlagContents, AH				; Store a copy of the flag contents for future use.
 
-	; Show the contents of EAX directly after the 'lahf' call.
-	CALL WriteBinB
-	CALL Crlf
 
+
+
+	ShowNewLine
 	
 	;Visual represention of graph begins here
 	
@@ -334,10 +343,27 @@ main PROC
 
 	mov edx,offset spaceC
 	call writestring
+	
+	
+	;-------------------------------------------------
+	CMP myValueMakesADifference, 0						;ZF value displayed here
+	JZ equalTo
+	JC lessThan
+	
+	
+	equalTo:							
+	MOV EDX, OFFSET valueEqual1
+	CALL WriteString
+	JMP over
 
-	mov edx,offset spaceC	;Directly under ZF
-	call writestring
+	lessThan:
+	MOV EDX, OFFSET valueLess1
+	CALL WriteString
+	
 
+	
+	over:
+	;-------------------------------------------------
 	mov edx,offset spaceC
 	call writestring
 	
