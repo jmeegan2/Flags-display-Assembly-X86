@@ -1,4 +1,5 @@
 ; EXTERNAL DEPENDENCIES
+;James Meegan ASM x86
 INCLUDE		Irvine32.inc
 INCLUDELIB	Irvine32.lib
 
@@ -76,11 +77,11 @@ invertedTC		BYTE	1 DUP(invertedTConnector), 0
 numberZeroD		BYTE	1 DUP(numberZero), 0
 number1			BYTE	1 DUP(numberOne), 0
 
-;data for calling zero flag
-myValueMakesADifference			BYTE	6d
-valueLess1			BYTE	"0"
-valueEqual1			BYTE	"1"
-
+;data for calling zero flag and cf
+myValueMakesADifference		BYTE	6d
+valueGreaterThanZero		BYTE	"0",0Dh, 0Ah, 0
+valueLessThanZero			BYTE	"x",0Dh, 0Ah, 0			;x just signifies error
+valueEqualToZero			BYTE	"1",0Dh, 0Ah, 0	
 
 
 ;
@@ -346,23 +347,31 @@ main PROC
 	
 	
 	;-------------------------------------------------
-	CMP myValueMakesADifference, 0						;ZF value displayed here
-	JZ equalTo
-	JC lessThan
+	;CMP myValueMakesADifference, 0
+	;JZ equalTo
+	;JC lessThan
+	;JMP greaterThan
 	
+	;equalTo:		
+	;MOV EDX, OFFSET valueEqualToZero													
+	;CALL WriteString
+	;JMP over														;Tried to get this to work but it kept pushing all the other input to the next line 
 	
-	equalTo:							
-	MOV EDX, OFFSET valueEqual1
-	CALL WriteString
-	JMP over
+	;lessThan:
+	;MOV EDX, OFFSET valueLessThanZero
+	;CALL WriteString												;Directly under zf
+	;JMP over
+	
+	;greaterThan:
+	;MOV EDX, OFFSET valueGreaterThanZero
+	;CALL WriteString
+	;JMP over				
+	
+	;over:
+	
+	mov edx,offset number1
+	call writestring
 
-	lessThan:
-	MOV EDX, OFFSET valueLess1
-	CALL WriteString
-	
-
-	
-	over:
 	;-------------------------------------------------
 	mov edx,offset spaceC
 	call writestring
@@ -432,10 +441,26 @@ main PROC
 
 	mov edx,offset spaceC
 	call writestring
-
-	mov edx,offset spaceC	;Directly under CF 
+	
+	
+	;-------------------------------------------------
+	;CMP myValueMakesADifferenceAlso, 0						;CF value displayed here
+	;JZ equalTo
+	;JC lessThan
+	
+	
+	mov edx,offset spaceC
 	call writestring
 
+;	lessThan:
+	;MOV EDX, OFFSET valueEqual1
+	;CALL WriteString
+	;JMP over
+
+	
+	;over:
+	
+	;-------------------------------------------------			
 	mov edx,offset spaceC
 	call writestring
 
@@ -514,6 +539,7 @@ main PROC
 
 
 	ShowNewline
+
 
 	
 
